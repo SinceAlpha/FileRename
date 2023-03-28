@@ -6,8 +6,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButto
 from PyQt5.QtCore import Qt
 
 
-
-
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -65,6 +63,12 @@ class MainWindow(QWidget):
 
         # Save the selected directory for later use
         self.directory = directory
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+            self.rename_file()
+        else:
+            super().keyPressEvent(event)
 
     def show_file(self):
         # Show the current file name in the label
@@ -237,7 +241,6 @@ if __name__ == '__main__':
 
     # Run the event loop until the user quits
     sys.exit(app.exec_())
-
 
 
 if __name__ == '__main__':
