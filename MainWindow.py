@@ -3,6 +3,7 @@ import os
 import shutil
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog
+from PyQt5.QtCore import Qt
 
 
 
@@ -141,16 +142,6 @@ class MainWindow(QWidget):
         # Quit the program
         sys.exit()
 
-# Author Darwin Borsato
-# import os
-# import shutil
-# import sys
-#
-# from PyQt5.QtWidgets import QHBoxLayout, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog, QApplication
-#
-# from MainWindow import MainWindow
-
-
 class CopyWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -193,6 +184,12 @@ class CopyWindow(QWidget):
             # Show the selected file name in the label
             self.file_label.setText(os.path.basename(file_path))
             self.file_path = file_path
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+            self.copy_file()
+        else:
+            super().keyPressEvent(event)
 
     def copy_file(self):
         if self.file_path:
