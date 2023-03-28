@@ -1,5 +1,6 @@
 # Author Darwin Borsato
 import os
+import shutil
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog
 
