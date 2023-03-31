@@ -1,5 +1,42 @@
-
-name: Release
+#
+#name: Release
+#
+#on:
+#  push:
+#    tags:
+#      - 'v*'
+#
+#jobs:
+#  release:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: 14
+#
+#      - name: Install dependencies
+#        run: npm ci
+#
+#      - name: Build
+#        run: npm run build
+#
+#      - name: Run tests
+#        run: npm test
+#
+#      - name: Create GitHub release
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          files: |
+#            directory_rename.py
+#            MainWindow.py
+#            copy_window.py
+#        env:
+#          GITHUB_TOKEN: ${{ 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 }}
+name: Release Executable
 
 on:
   push:
@@ -7,32 +44,44 @@ on:
       - 'v*'
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install dependencies
-        run: npm ci
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
 
-      - name: Build
-        run: npm run build
+    - name: Build executable
+      run: |
+        pyinstaller --onefile --noconsole --name DWGRename MainWindow.py
 
-      - name: Run tests
-        run: npm test
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
 
-      - name: Create GitHub release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            directory_rename.py
-            MainWindow.py
-            copy_window.py
-        env:
-          GITHUB_TOKEN: ${{ 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 }}
+    - name: Upload executable
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ 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 }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/DWGRename.exe
+        asset_name: DWGRename.exe
+        asset_content_type: application/octet-stream
