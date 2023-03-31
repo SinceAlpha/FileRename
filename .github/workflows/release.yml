@@ -78,9 +78,8 @@ jobs:
 
     - name: Upload executable
       uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.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 }}
       with:
+        GITHUB_TOKEN: ${{ secrets.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 }}
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./dist/DWGRename.exe
         asset_name: DWGRename.exe
