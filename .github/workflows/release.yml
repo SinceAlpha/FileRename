@@ -68,8 +68,9 @@ jobs:
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
-      with:
+      env:
         GITHUB_TOKEN: ${{ secrets.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 }}
+      with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
         draft: false
@@ -77,8 +78,9 @@ jobs:
 
     - name: Upload executable
       uses: actions/upload-release-asset@v1
-      with:
+      env:
         GITHUB_TOKEN: ${{ secrets.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 }}
+      with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./dist/DWGRename.exe
         asset_name: DWGRename.exe
