@@ -31,7 +31,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            path/to/your/file1
-            path/to/your/file2
+            directory_rename.py
+            MainWindow.py
+            copy_window.py
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ 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 }}
