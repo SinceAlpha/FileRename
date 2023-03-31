@@ -68,7 +68,6 @@ jobs:
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
-
       with:
         token: ${{ secrets.MY_PAT }}
         tag_name: ${{ github.ref }}
