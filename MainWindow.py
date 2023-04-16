@@ -1,8 +1,8 @@
 # Author Darwin Borsato
+
 import os
-import shutil
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt
 import copy_window
 import directory_rename
@@ -17,7 +17,7 @@ class MainWindow(QWidget):
         self.setGeometry(100, 100, 750, 200)
 
         # Set up the widgets
-        self.file_label = QLabel("No file selected")
+        self.file_label = QLabel("No file in directory or no directory selected")
         self.copy_file_button = QPushButton("Switch to Copy File")
         self.directory_rename_button = QPushButton("Switch to Rename directories")
         self.new_file_label = QLabel("New filename:")
@@ -89,12 +89,77 @@ class MainWindow(QWidget):
         # Show the next file in the list
         self.show_file()
 
+    # def rename_file(self):
+    #     # Get the current file path
+    #     file_path = os.path.join(self.directory, self.files[self.current_file_index])
+    #
+    #     # Get the new file name from the input field
+    #     new_file_name = self.new_file_input.text()
+    #     #Check if the new file name exists in the current directory
+    #     if new_file_name in self.files:
+    #         # display an alert using QMessageBox
+    #         alert = QMessageBox()
+    #         alert.setWindowTitle("ERROR!")
+    #         alert.setText("A file with the same name already exists! Try again!")
+    #         alert.setIcon(QMessageBox.Warning)
+    #         alert.exec_()
+    #         return
+    #
+    #
+    #     print(self.files)
+    #     # this need to check all the files for the new_file_name and if the new_file_name exists in the directory
+    #     # then skip
+    #     # this currently crashes if the file is the same as one in the directory
+    #     # x = 0
+    #     # # if the new file name is not the current index of self.file add one to the index
+    #     # if new_file_name is not self.files[x]:
+    #     #     x += 1
+    #     #     print("next file! ", self.file[x])
+    #     #     if self.current_file_index >= len(self.files):
+    #     #         print("file renamed")
+    #     #         os.rename(file_path, os.path.join(self.directory, new_file_name))
+    #     # elif new_file_name is self.files[x]:
+    #     #     print("File name exists")
+    #         #os.rename(file_path, os.path.join(self.directory, new_file_name))
+    #     # Rename the file with the new file name
+    #     # for file in self.files:
+    #     #     if new_file_name is self.files:
+    #     #         print("File already exists! Skipping...")
+    #     #         self.skip_file()
+    #     #         #QMessageBox("This file already exist in the directory")
+    #     #     elif new_file_name is not self.files:
+    #     #         print("file renamed")
+    #     #         os.rename(file_path, os.path.join(self.directory, new_file_name))
+    #
+    #     # Remove the renamed file from the file list
+    #     self.files.pop(self.current_file_index)
+    #
+    #     if len(self.files) > 0:
+    #         # Move to the next file in the list
+    #         self.current_file_index %= len(self.files)
+    #
+    #         # Show the next file in the list
+    #         self.show_file()
+    #     else:
+    #         # If there are no more files, clear the label and input field
+    #         self.file_label.setText("No file selected")
+    #         self.new_file_input.setText("")
     def rename_file(self):
         # Get the current file path
         file_path = os.path.join(self.directory, self.files[self.current_file_index])
 
         # Get the new file name from the input field
         new_file_name = self.new_file_input.text()
+
+        # Check if the new file name already exists in the directory
+        if new_file_name in self.files:
+            # Display an alert message using QMessageBox
+            alert = QMessageBox()
+            alert.setWindowTitle("Error")
+            alert.setText("A file with the same name already exists.")
+            alert.setIcon(QMessageBox.Warning)
+            alert.exec_()
+            return
 
         # Rename the file with the new file name
         os.rename(file_path, os.path.join(self.directory, new_file_name))
@@ -138,24 +203,3 @@ if __name__ == '__main__':
 
     # Run the event loop until the user quits
     sys.exit(app.exec_())
-
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#
-#     main_window = MainWindow()
-#     copy_window = CopyWindow()
-#     dirct_window = directory_rename.DirectoryRenamer()
-#
-#     # Connect the 'switch_to_copy' button to show the copy window
-#     main_window.copy_file_button.clicked.connect(copy_window.show)
-#     main_window.copy_file_button.clicked.connect(main_window.hide)
-#     main_window.show()
-#
-#     #Connect the 'switch to directory' button to show the rename window
-#     main_window.directory_rename_button.clicked.connect(dirct_window.show)
-#     main_window.directory_rename_button.clicked.connect(main_window.hide)
-#     main_window.show()
-#
-#     # Run the event loop until the user quits
-#     sys.exit(app.exec_())
