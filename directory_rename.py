@@ -2,7 +2,7 @@
 import os
 import shutil
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QFileDialog, QMessageBox
 from PyQt5.QtCore import Qt
 
 
@@ -83,6 +83,16 @@ class DirectoryRenamer(QWidget):
 
         # Get the new directory name from the input field
         new_dir_name = self.new_dir_input.text()
+
+        # Check if the new file name already exists in the directory
+        if new_dir_name in self.directories:
+            # Display an alert message using QMessageBox
+            alert = QMessageBox()
+            alert.setWindowTitle("Error")
+            alert.setText("A folder with the same name already exists.")
+            alert.setIcon(QMessageBox.Warning)
+            alert.exec_()
+            return
 
         # Rename the directory with the new directory name
         os.rename(dir_path, os.path.join(self.parent_directory, new_dir_name))
