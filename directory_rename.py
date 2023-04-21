@@ -61,7 +61,7 @@ class DirectoryRenamer(QWidget):
 
         # Save the selected parent directory for later use
         self.parent_directory = parent_directory
-
+        # FUCK KEVIN
     def show_directory(self):
         # Show the current directory name in the label
         self.dir_label.setText(self.directories[self.current_dir_index])
@@ -84,18 +84,12 @@ class DirectoryRenamer(QWidget):
         # Get the new directory name from the input field
         new_dir_name = self.new_dir_input.text()
 
-        # Check if the new file name already exists in the directory
-        if new_dir_name in self.directories:
-            # Display an alert message using QMessageBox
-            alert = QMessageBox()
-            alert.setWindowTitle("Error")
-            alert.setText("A folder with the same name already exists.")
-            alert.setIcon(QMessageBox.Warning)
-            alert.exec_()
-            return
+        #Check for same filename
+        if new_dir_name in self.files:
+
 
         # Rename the directory with the new directory name
-        os.rename(dir_path, os.path.join(self.parent_directory, new_dir_name))
+            os.rename(dir_path, os.path.join(self.parent_directory, new_dir_name))
 
         # Remove the renamed directory from the directory list
         self.directories.pop(self.current_dir_index)
